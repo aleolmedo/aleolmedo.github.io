@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="STEM problem illustrations Q&A with VLMs - Yandex Cup ML 2025">
+    <title>STEM Problem Illustrations Q&A - Yandex Cup ML 2025</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="../../../style.css">
+    <link rel="stylesheet" href="markdown-styles.css">
+  </head>
+  <body>
+    <div class="default">
+      <div data-nav-placeholder="sidebar"></div>
+      
+      <main class="index">
+        <div data-nav-placeholder="mobile"></div>
+        
+        <div class="container">
+          <div class="profile-section">
+            <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">STEM Problem Illustrations Q&A with VLMs</h1>
+          </div>
+          
+          <div class="mono description">
+            <div style="margin-bottom: 2rem;">
+              <a href="index.html" style="color: var(--accent); text-decoration: underline;">← Back to Yandex Cup ML 2025</a>
+            </div>
+            
+            <div class="markdown-content">
+              <details>
+                <summary>Problem Statement</summary>
+                <h1>STEM problem illustrations Q&A with VLMs</h1>
+
+                <p>In STEM sciences, visual illustration is often an integral part of understanding a problem or article: these can be graphs, geometric diagrams, thermodynamic cycles, model architectures, and engine schematics. Often one picture says more than all the text, and in such cases, even the smartest language models lose in understanding to simple convolutional networks.</p>
+
+                <p>This is where multimodal VLMs come to the rescue, which on one hand are capable of understanding images, and on the other hand possess extensive knowledge about the world. In this task, we propose to teach them to better understand diagrams from school problems in geometry and physics.</p>
+
+                <p>Imagine that we are in school, in a geometry lesson, and we are given a problem with a diagram like this:</p>
+
+                <p>![[Pasted image 20251117170601.png]]</p>
+
+                <p>How would we approach it? First, we would write out "Given" and translate the visual language of notation into text, introducing letter names for the vertices of the triangle, recording equal segments, the right angle, and the question of the problem (it's not hard to guess that the problem requires finding ∠ α ∠α). In fact, we are performing the process of describing the diagram; due to the visual nature of the diagram, in CV this task would be called Image Captioning. Within this contest, we need to solve it, but in a simplified form — answering intermediate questions.</p>
+
+                <p>We ask you to treat the diagrams as separate mathematical entities that solely form the problem statement, and to ignore text if it is not located on the diagram itself. You will be presented with 4 to 6 statements, and you need to indicate which ones are correct; this can be 1 or more options.</p>
+
+                <h2>Physics Example</h2>
+
+                <p>![[Pasted image 20251117170623.png]]</p>
+
+                <p>Which of the balls is at the bottom of the vessel?</p>
+
+                <p>A. Ball 1<br>
+                B. Ball 2<br>
+                C. Ball 3<br>
+                D. All balls</p>
+
+                <p>Answer: "C"</p>
+
+                <h2>Geometry Example</h2>
+
+                <p>![[Pasted image 20251117170654.png]]</p>
+
+                <p>A. AB = CD B. ∠AEB = 30° C. AB = 4 cm D. BC = 4 cm E. BE ⊥ BC</p>
+
+                <p>Answer: "AC"</p>
+
+                <h2>Input Format</h2>
+
+                <p>You are given a file input.pickle. It contains a list of dictionaries containing images and answer options:</p>
+
+                <pre><code>[
+    {
+        "rid" : 1,
+        "question" : "A. Angle α is 86°\\nB. The angle adjacent to angle α is 56°\\nC. α = 48°\\nD. The sum of angles 86° and 38° is equal to angle α\\nE. All the rays depicted lie on two intersecting lines",
+        "image" : &lt;blob&gt;,
+    },
+    {
+        "rid" : 2,
+        "question" : "What can be said about the liquid levels h₁ and h₂ shown in the figure?\\nA. h₁ > h₂\\nB. h₂ > h₁\\nC. h₁ = h₂\\nD. This cannot be determined from the figure.",
+        "image" : &lt;blob&gt;,
+    }
+]</code></pre>
+
+                <h2>Output Format</h2>
+
+                <p>Your solution.py should write output.json with a list of dictionaries containing answers, for example:</p>
+
+                <pre><code>[{"rid": 1, "answer": "BC"}, {"rid": 2, "answer": "D"}]</code></pre>
+
+                <h2>Solution Format</h2>
+
+                <p>Add your solution to solution.py in the attached GitLab repository. You can attach checkpoints / additional files up to 10 GB in size. More information about the submission method can be found in the repository's README.</p>
+
+                <h2>Metric</h2>
+
+                <p>Calculated as F1-micro for classification with multiple answers, excluding examples where the model produced more answers than the correct ones. For ease of understanding, the leaderboard metric is multiplied by 1000.</p>
+
+                <h2>Technical constraints</h2>
+
+                <p>The public part of the test contains ~1000 queries. The model must be able to run and complete within one hour on NVIDIA Tesla L4.</p>
+
+                <h2>Example Solution and Metric</h2>
+
+                <p>We also provide an example solution and metric code. You can find them in the <a href="https://assets.contest.yandex.net/testsys/statement-file?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..thUNpbqNB2h4j4zH.1vIeg5jY-MtwyqvJzVzKHLX0CYaWSH-35QFDg9jzWh6Ok8r5jPMfx6QfHWEEDUKZ8VKdbeE9p_5RNebAuibltqu2Fk7PwRNJFxJ-DcQ_-Fz6KnXQSMo.GPQpIpQRvvFJ5TiUTojEeg">archive</a>.</p>
+              </details>
+
+              <h2>Write-up of STEM Problem Illustrations Q&A with VLMs</h2>
+
+              <p>The constraints were: all the files should be under 10GB in total and the model should be able to run on around 1000 queries in less than one hour.</p>
+
+              <p>To <strong>begin</strong> with, we had to choose an LLM suitable for the task.</p>
+
+              <p>Key criteria that we had to consider:</p>
+              <ol>
+                <li>The model should be good solving <strong>math problems</strong>.</li>
+                <li>The model should be good enough to <strong>follow instructions</strong>.</li>
+              </ol>
+
+              <h3>Model Selection</h3>
+
+              <p>The task asks for a model good enough with math problems/exercises so in this field the clear open source winner are the Chinese models that are really good in maths and are trained to perform well in math tasks. Between these, the best in many benchmarks is QWEN-3VL-Instruct and I chose the 8b version AWQ (q4) for this task. I tried briefly with other models like InternVL3_5-14B but I didn't get better results, so I decided to continue with Qwen.</p>
+
+              <h3>Pipeline</h3>
+
+              <p>The prompt that I used in the competition was the following:</p>
+
+              <details>
+                <summary>Prompt</summary>
+                <pre><code>You are an expert AI assistant for solving school-level STEM problems from diagrams.
+The image contains the complete problem statement via visual elements and on-diagram labels only.
+Ignore any text not physically present in the image.
+Your task:  
+First, provide a step-by-step reasoning by analyzing each statement one by one.
+1. Carefully interpret the picture and the information in the picture.  
+2. For each statement, determine if it is factually correct based *only* on the visual information and explicit labels.  
+3. **In geometry problems**:  
+   - Only assume two segments are equal if they are marked with identical tick marks (or hatch marks).  
+   - Only assume two angles are equal if they are marked with identical arc symbols (or angle markers).  
+   - Do not assume right angles, parallel lines, congruent triangles, or any other properties unless explicitly indicated by standard diagram notation (e.g., a small square for a right angle, arrowheads for parallel lines, matching tick/arc marks for congruence).  
+4. **In physics problems**:  
+   - Only assume quantities are equal (e.g., forces, velocities, masses) if explicitly labeled as such or indicated by standard symbols (e.g., identical vector arrows with same length and label, equal mass symbols).  
+   - Do not assume symmetry, equilibrium, or idealized conditions (e.g., frictionless surfaces, massless strings) unless stated or implied by conventional diagram notation (e.g., "smooth" label, standard pulley symbols).  
+5. Do not infer relationships beyond what is directly supported by labeled values or universally accepted diagram conventions. Avoid assumptions based on visual appearance alone (e.g., "it looks like a square" is insufficient).  
+6. Write down your reasoning for each statement (e.g., "A. This is correct because the diagram shows two tick marks on AB and AC, indicating AB = AC.").  
+7. After analyzing all statements, conclude with the final answer on a new line.  
+8. The final answer line must start *only* with "Answer: " followed by the letters of the correct choices, concatenated in alphabetical order (e.g., "Answer: AC", "Answer: B").  
+9. If none are correct, output "Answer: ".
+Example 1 (Physics: Buoyancy)
+Image: 
+Statements:
+A. Ball 1 is at the bottom of the vessel.
+B. Ball 2 is at the bottom of the vessel.
+C. Ball 3 is at the bottom of the vessel.
+D. All balls are at the bottom of the vessel.
+Let's think step by step:
+10. Statement A: Ball 1 is floating near the top surface. This is incorrect.
+11. Statement B: Ball 2 is suspended (floating) in the middle of the liquid. This is incorrect.
+12. Statement C: Ball 3 has sunk and is resting on the bottom of the vessel. This is correct.
+13. Statement D: Since only Ball 3 is at the bottom, this statement is incorrect.
+Answer: C
+Example 2 (Geometry: Angles and Segments)
+Image: 
+Statements:
+A. AB = CD
+B. ∠AEB = 30°
+C. AB = 4 cm
+D. BC = 4 cm
+E. BE ⊥ BC
+Let's think step by step:
+14. Statement A: The diagram shows single tick marks on segments AB and CD. This visual notation means they are equal in length. This is correct.
+15. Statement B: The diagram explicitly labels ∠CED as 30°. The problem states to use information from the image and not assume. The label is not on ∠AEB. This is incorrect.
+16. Statement C: The diagram explicitly labels the length of segment AB as "4 cm". This is correct.
+17. Statement D: The diagram does not provide any label or notation for the length of segment BC. This is incorrect.
+18. Statement E: The diagram shows a right-angle symbol at point E, indicating that BE is perpendicular to AC (BE ⊥ AC). It does not show a right angle at B. This is incorrect.
+Answer: AC
+Statements:
+{stmts}
+Let's think step by step:</code></pre>
+              </details>
+
+              <p>The idea was to use a simplified chain of thought to check if each statement is ok or not and based on that give the answer, then parse the text to get the correct answer.</p>
+
+              <p>The prompt alone gave me a score of around 650 but I noticed that depending on the run on the testing system it could give me 700+ points, so it was not robust enough. The leaderboard was changing also, so I thought this wasn't that stable. Since the inference was quite fast, I decided to use an ensemble-like solution. I ran the model three times and made a voting to get correct answers. Since the metric was F1-micro and the punishment was greater if we were overconfident with our answers and gave a longer answer than needed, I decided to do this voting unanimous, so I used the intersection of all the answers as the correct answer. This gave a score of 700+ points consistently on the public leaderboard and at the end of the competition my position was in the top 10 in the public testing. I tried to use other voting systems but this was the best in the public testing for consistency.</p>
+
+              <p>Also, I considered image processing to be a good factor. What I did to have a better outcome with the image processing part was I focused on two key optimizations:</p>
+
+              <p>First, I scaled the image so its largest side fits exactly into the 768-pixel target, preserving the aspect ratio to prevent distortion.</p>
+
+              <p>Second, and most importantly, I made the final resized dimensions divisible by the model's patch size of 16. For example, an image might be resized to 752x768 or 768x736—always a multiple of 16. This is crucial because the vision transformer processes the image in 16x16 pixel blocks, and providing perfectly aligned dimensions allows it to create exactly 2,304 patches (from 48x48 grid) that match the model's architecture, leading to cleaner feature extraction and better overall understanding.</p>
+
+              <p>This configuration actually gave me better performance.</p>
+
+              <h2>Outcome</h2>
+
+              <p>I got a 10% drop in the private testing and I ended up in the 13th position at the end with a score of 644.78.</p>
+
+              <h3>What I Tried That Didn't Work</h3>
+
+              <p>I tried multiple prompts to try to increase the performance but none of them worked better than the one I used at the end of the competition.</p>
+
+              <h3>What I Could Have Done Better</h3>
+
+              <ul>
+              <li><strong>Model Exploration:</strong> Although I tried bigger models and different quants, I could have explored more models. I had the constraint of 10GB storage and my model used only 7.6GB, so I had room for bigger models - but the Q8 version of Qwen didn't fit at 10.6GB. I didn't get to try InternVL 14B on public testing due to time constraints.</li>
+
+              <li><strong>Prompt Engineering:</strong> I could have spent more time on prompt engineering. I think this might have been the biggest factor in this contest for improving performance.</li>
+
+              <li><strong>Voting Strategy:</strong> I preferred to play safe with the intersection of ensemble answers. Maybe I could have chosen another voting mechanism like majority voting by letters - I tried it but it wasn't consistent on the public dataset, which is why I discarded it since we only had one submission for scoring.</li>
+              </ul>
+              <h2>Conclusions</h2>
+
+              <p>It was a fun challenge to try state-of-the-art vision LLMs. I learned that you can actually get really good results with local models even in math, this is really interesting. When I was trying VLLMs last year it wasn't like that in my perception it was better than Qwen2.5 VL from last year. Also I learned that pre-processing the image can give a boost in performance if you adjust carefully according to the architecture of your model.</p>
+              <div>
+                <p style="margin: 0; font-weight: 500;"><strong>Implementation Details:</strong> For the complete code, model configurations, and implementation details, check out the <a href="https://github.com/yourusername/stem-vlm-qa" style="color: var(--accent); text-decoration: underline;">GitHub repository</a>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    
+    <script src="../../../includes/loader.js"></script>
+    <script src="../../../script.js"></script>
+  </body>
+</html>

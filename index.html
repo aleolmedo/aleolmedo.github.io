@@ -10,51 +10,10 @@
   </head>
   <body>
     <div class="default">
-      <nav class="sidebar">
-        <header>
-          Alexander Olmedo
-          <button class="button only-mobile">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="x-icon">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </header>
-        
-        <section>
-          <a href="/" class="active">Home</a>
-          <a href="/blog">Blog</a>
-          <a href="Sections/CV/Ale_curriculum_english.pdf" target="_blank" rel="noopener">CV</a>
-        </section>
-        <!--
-        <section>
-          <h4>Projects</h4>
-          <a href="/projects/Coming soon">
-            Coming soon
-          </a>
-        </section>
-        -->
-        <section>
-          <h4>Contact</h4>
-          <a href="mailto:aleolmedo2352@gmail.com">Email</a>
-          <a href="https://t.me/aleolmedo2352" target="_blank" rel="noopener">Telegram</a>
-          <a href="https://www.linkedin.com/in/aleolmedo/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/aleolmedo" target="_blank" rel="noopener">GitHub</a>
-        </section>
-      </nav>
+      <div data-nav-placeholder="sidebar"></div>
       
       <main class="index">
-        <nav class="navigation-bar only-mobile">
-          <div class="left">
-            <button class="button">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="menu-icon">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
-            </button>
-          </div>
-          
-          <div class="title show">Home</div>
-          <div class="right"></div>
-        </nav>
+        <div data-nav-placeholder="mobile"></div>
         
         <div class="container">
           <div class="profile-section">
@@ -73,6 +32,7 @@
       </main>
     </div>
     
+    <script src="includes/loader.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
