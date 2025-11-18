@@ -189,6 +189,14 @@ main {
   text-align: center;
   transform: translateY(40px);
   transition: .3s ease;
+  /* Prevent text wrapping and ensure single line */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 96px); /* Account for left and right buttons */
+  margin: 0 auto;
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
 }
 
 .navigation-bar .title.show {
@@ -200,11 +208,28 @@ main {
 @media (max-width: 1024px) {
   main {
     padding: 0;
+    padding-top: 64px; /* Add padding for mobile navigation bar */
+  }
+  
+  /* Fix header spacing for mobile */
+  .profile-section h1 {
+    font-size: 2rem !important; /* Reduce font size for mobile */
+    margin-top: 1rem !important; /* Add top margin */
+    margin-bottom: 1.5rem !important; /* Adjust bottom margin */
+    text-align: center; /* Center align on mobile */
   }
   
   .sidebar {
     display: none;
+    position: fixed;
+    top: 0;
     left: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 20;
+    background-color: var(--background);
+    border-right: 1px solid #666;
+    overflow-y: auto;
   }
   
   .sidebar.show {
@@ -214,6 +239,73 @@ main {
   
   .only-mobile {
     display: block !important;
+  }
+  
+  /* Hide desktop sidebar on mobile */
+  .sidebar:not(.show) {
+    display: none;
+  }
+  
+  /* Mobile navigation bar */
+  .navigation-bar {
+    display: flex !important;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    height: 48px;
+    z-index: 15;
+    backdrop-filter: saturate(180%) blur(20px);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0 12px; /* Reduce padding for more title space */
+  }
+  
+  /* Mobile navigation title improvements */
+  .navigation-bar .title {
+    font-size: 16px; /* Slightly smaller font for mobile */
+    max-width: calc(100% - 80px); /* More space for title */
+    padding: 0 8px; /* Add some padding around the title */
+  }
+  
+  /* Smaller screens - further reduce font size */
+  @media (max-width: 375px) {
+    .navigation-bar .title {
+      font-size: 14px;
+      max-width: calc(100% - 70px);
+    }
+  }
+  
+  /* Very small screens - minimal font size */
+  @media (max-width: 320px) {
+    .navigation-bar .title {
+      font-size: 13px;
+      max-width: calc(100% - 60px);
+    }
+  }
+  
+  /* Overlay when sidebar is open */
+  .sidebar.show::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+}
+
+/* Hide mobile navigation on desktop */
+@media (min-width: 1025px) {
+  .only-mobile {
+    display: none !important;
+  }
+  
+  .navigation-bar {
+    display: none !important;
   }
 }
 

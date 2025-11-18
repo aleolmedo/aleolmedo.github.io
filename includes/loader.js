@@ -117,29 +117,116 @@ class NavigationLoader {
 
     // Note: Active link highlighting functionality has been removed as requested
 
-    // Update page title in mobile navigation
+    // Update page title in mobile navigation with smart truncation
     updatePageTitle() {
         const pageTitle = document.querySelector('[data-page-title]');
         if (pageTitle) {
             const title = document.title.split(' - ')[0]; // Get main title part
-            pageTitle.textContent = title;
+            pageTitle.textContent = this.truncateTitle(title);
         }
+    }
+
+    // Smart title truncation for mobile navigation
+    truncateTitle(title) {
+        // Common abbreviations for long titles
+        const abbreviations = {
+            'Yandex Cup ML 2025': 'Yandex Cup ML',
+            'Large Language Models': 'LLM',
+            'Visual Language Models': 'VLM',
+            'STEM problem illustrations': 'STEM Illustrations',
+            'hallucinations robustness': 'Hallucinations'
+        };
+
+        // Try to find and replace long phrases with abbreviations
+        let truncatedTitle = title;
+        for (const [long, short] of Object.entries(abbreviations)) {
+            if (truncatedTitle.includes(long)) {
+                truncatedTitle = truncatedTitle.replace(long, short);
+            }
+        }
+
+        // If still too long, use ellipsis truncation (CSS will handle this)
+        return truncatedTitle;
     }
 
     // Re-initialize navigation functionality
     reinitializeNavigation() {
-        // Re-attach mobile menu toggle functionality
-        const menuButtons = document.querySelectorAll('.button');
-        menuButtons.forEach(button => {
-            button.addEventListener('click', this.handleMenuToggle);
-        });
+        this.setupMobileNavigation();
     }
 
-    // Handle mobile menu toggle
-    handleMenuToggle(event) {
+    // Setup mobile navigation functionality
+    setupMobileNavigation() {
         const sidebar = document.querySelector('.sidebar');
-        if (sidebar) {
-            sidebar.classList.toggle('active');
+        const menuButton = document.querySelector('.navigation-bar .button');
+        const closeButton = document.querySelector('.sidebar .only-mobile');
+        
+        // Function to toggle the sidebar
+        const toggleSidebar = () => {
+            if (sidebar) {
+                sidebar.classList.toggle('show');
+                document.body.classList.toggle('menu-open', sidebar.classList.contains('show'));
+            }
+        };
+        
+        // Add click event listeners
+        if (menuButton) {
+            menuButton.addEventListener('click', toggleSidebar);
+        }
+        
+        if (closeButton) {
+            closeButton.addEventListener('click', toggleSidebar);
+        }
+        
+        // Close sidebar when clicking on a link
+        const navLinks = document.querySelectorAll('.sidebar a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024 && sidebar) {
+                    sidebar.classList.remove('show');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                sidebar && 
+                !e.target.closest('.sidebar') && 
+                !e.target.closest('.navigation-bar') && 
+                sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                document.body.classList.remove('menu-open');
+            }
+        });
+
+        // Add CSS for body state when menu is open
+        if (!document.querySelector('#mobile-menu-styles')) {
+            const style = document.createElement('style');
+            style.id = 'mobile-menu-styles';
+            style.textContent = `
+                body.menu-open {
+                    overflow: hidden;
+                }
+                
+                /* Adjust navigation bar position - move it down slightly */
+                .navigation-bar {
+                    top: 8px;
+                    border-radius: 8px;
+                    margin: 8px;
+                    backdrop-filter: saturate(180%) blur(20px);
+                    background-color: rgba(0, 0, 0, 0.8);
+                }
+                
+                /* Style for mobile devices */
+                @media (max-width: 1024px) {
+                    .navigation-bar {
+                        margin: 8px;
+                        border-radius: 8px;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         }
     }
 
